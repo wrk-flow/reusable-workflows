@@ -5,10 +5,10 @@ See https://docs.github.com/en/actions/learn-github-actions/reusing-workflows#ca
 ## PHP  Check
 
 1. Create a file `.github/workflows/check.yml`
-2. Runs PHP stan **(needs to be installed).**
-3. Runs Rector PHP **(needs to be installed).**
-4. Runs ECS **(needs to be installed).**
-5. Runs PHP unit tests
+2. Runs PHP stan **(needs to be installed).** with `composer lint:stan`
+3. Runs Rector PHP **(needs to be installed).** with `composer lint:upgrade:check`
+4. Runs ECS **(needs to be installed).** with `composer lint:check`
+5. Runs PHP unit tests with ` vendor/bin/phpunit`
     1. PHP 8.1
     2. Highest / lowest depedencies
 6. Publishes code coverage (only on main branch, not triggered if `secrets.GIST_SECRET` and `inputs.gistID` is not set)
