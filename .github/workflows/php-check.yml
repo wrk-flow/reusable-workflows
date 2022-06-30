@@ -86,7 +86,7 @@ jobs:
       # TODO on pull request add comment?
 
       - name: "Create badge"
-        if: ${{ secrets.GIST_SECRET != '' && inputs.gistID != '' && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
+        if: ${{ inputs.gistID != '' && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
         uses: schneegans/dynamic-badges-action@v1.4.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
