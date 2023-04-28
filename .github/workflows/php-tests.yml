@@ -1,0 +1,65 @@
+# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+
+name: "Check PHP"
+
+on:
+  workflow_call:
+    # see https://docs.github.com/en/actions/using-workflows/reusing-workflows#using-inputs-and-secrets-in-a-reusable-workflow
+    inputs:
+      phpVersion:
+        required: false
+        type: string
+        default: "8.1"
+    secrets:
+      GIST_SECRET:
+        required: false
+
+  tests:
+    name: "Tests ${{ inputs.phpVersion }}"
+    runs-on: "ubuntu-latest"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        dependencies:
+          - "lowest"
+          - "highest"
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "xdebug"
+          php-version: "${{ inputs.phpVersion }}"
+
+      - name: "Install lowest dependencies"
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: "composer update --prefer-lowest --no-interaction --no-progress"
+
+      - name: "Install highest dependencies"
+        if: ${{ matrix.dependencies == 'highest' }}
+        run: "composer update --no-interaction --no-progress"
+
+      - name: "Tests"
+        id: tests
+        continue-on-error: false
+        run: |
+          vendor/bin/phpunit --coverage-text --coverage-text=coverage.txt
+          echo "{coverage}=$(cat coverage.txt | grep -Po '^\s*Lines:\s*\d+.\d+\%' | grep -Po '\d+.\d+')" >> $GITHUB_OUTPUT
+
+      # TODO on pull request add comment?
+
+      - name: "Create badge"
+        if: ${{ vars.GIST_ID != '' && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
+        uses: schneegans/dynamic-badges-action@v1.4.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ inputs.gistID }}
+          filename: coverage.json
+          label: Coverage
+          # TODO colors?
+          message: ${{ steps.tests.outputs.coverage }}
+          color: success
