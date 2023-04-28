@@ -9,6 +9,10 @@ on:
       gistID:
         required: false
         type: string
+      phpVersion:
+        required: false
+        type: string
+        default: "8.1"
     secrets:
       GIST_SECRET:
         required: false
@@ -18,11 +22,6 @@ jobs:
     name: "Coding Standard"
     runs-on: "ubuntu-latest"
 
-    strategy:
-      matrix:
-        php-version:
-          - "8.1"
-
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
@@ -31,7 +30,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           coverage: "none"
-          php-version: "${{ matrix.php-version }}"
+          php-version: "${{ phpVersion }}"
 
       - name: "Validate Composer"
         run: "composer validate"
@@ -52,8 +51,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version:
-          - "8.1"
         dependencies:
           - "lowest"
           - "highest"
@@ -66,7 +63,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           coverage: "xdebug"
-          php-version: "${{ matrix.php-version }}"
+          php-version: "${{ phpVersion }}"
 
       - name: "Install lowest dependencies"
         if: ${{ matrix.dependencies == 'lowest' }}
@@ -81,7 +78,7 @@ jobs:
         continue-on-error: false
         run: |
           vendor/bin/phpunit --coverage-text --coverage-text=coverage.txt
-          echo "::set-output name=coverage::$(cat coverage.txt | grep -Po '^\s*Lines:\s*\d+.\d+\%' | grep -Po '\d+.\d+')"
+          echo "{coverage}=$(cat coverage.txt | grep -Po '^\s*Lines:\s*\d+.\d+\%' | grep -Po '\d+.\d+')" >> $GITHUB_OUTPUT
 
       # TODO on pull request add comment?
 
@@ -104,8 +101,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version:
-          - "8.1"
         dependencies:
           - "lowest"
           - "highest"
@@ -118,7 +113,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           coverage: "none"
-          php-version: "${{ matrix.php-version }}"
+          php-version: "${{ phpVersion }}"
           extensions: mbstring
           tools: composer:v2
 
