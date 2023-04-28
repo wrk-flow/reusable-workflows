@@ -13,8 +13,8 @@ on:
     secrets:
       GIST_SECRET:
         required: false
-
-  run_tests:
+jobs:
+  tests:
     name: "Tests ${{ inputs.phpVersion }}"
     runs-on: "ubuntu-latest"
 
