@@ -14,7 +14,7 @@ on:
       GIST_SECRET:
         required: false
 
-  tests:
+  run_tests:
     name: "Tests ${{ inputs.phpVersion }}"
     runs-on: "ubuntu-latest"
 
