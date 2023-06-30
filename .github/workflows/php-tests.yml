@@ -9,6 +9,10 @@ on:
       gistID:
         required: false
         type: string
+      gistOnPhpVersion:
+        required: false
+        type: string
+        default: "8.1"
       phpVersion:
         required: false
         type: string
@@ -56,7 +60,7 @@ jobs:
       # TODO on pull request add comment?
 
       - name: "Create badge"
-        if: ${{ vars.GIST_ID != '' && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
+        if: ${{ inputs.gistID != '' && inputs.gistOnPhpVersion != '' && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
         uses: schneegans/dynamic-badges-action@v1.4.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
