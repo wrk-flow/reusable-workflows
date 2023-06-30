@@ -6,6 +6,9 @@ on:
   workflow_call:
     # see https://docs.github.com/en/actions/using-workflows/reusing-workflows#using-inputs-and-secrets-in-a-reusable-workflow
     inputs:
+      gistID:
+        required: false
+        type: string
       phpVersion:
         required: false
         type: string
