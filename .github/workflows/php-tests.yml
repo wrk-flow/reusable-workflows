@@ -22,7 +22,7 @@ on:
         required: false
 jobs:
   tests:
-    name: "Tests ${{ inputs.phpVersion }}"
+    name: "Tests ${{ inputs.phpVersion }} (${{ matrix.dependencies }})"
     runs-on: "ubuntu-latest"
 
     strategy:
