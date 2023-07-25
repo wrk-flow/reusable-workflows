@@ -9,6 +9,12 @@ on:
       gistID:
         required: false
         type: string
+      composerRemove:
+        required: false
+        type: string
+      dirsRemove:
+        required: false
+        type: string
       gistOnPhpVersion:
         required: false
         type: string
@@ -49,6 +55,14 @@ jobs:
       - name: "Install highest dependencies"
         if: ${{ matrix.dependencies == 'highest' }}
         run: "composer update --no-interaction --no-progress"
+        
+      - name: "Remove composer packages"
+        if: ${{ inputs.composerRemove != '' }}
+        run: "composer remove ${{ inputs.composerRemove }}"
+        
+      - name: "Remove folders"
+        if: ${{ inputs.dirsRemove != '' }}
+        run: "rm -rf  ${{ inputs.dirsRemove }}"
 
       - name: "Tests"
         id: tests
