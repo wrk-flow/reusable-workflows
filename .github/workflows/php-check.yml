@@ -67,6 +67,9 @@ jobs:
           extensions: mbstring
           tools: composer:v2
 
+      - name: "Update composer with correct php version"
+        run: "composer require php:'>=${{ inputs.phpVersion }}'"
+      
       - name: "Require dev before install"
         if: ${{ inputs.composerRequireDev != '' }}
         run: "composer require --dev ${{ inputs.composerRequireDev }}"
