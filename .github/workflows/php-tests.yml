@@ -85,7 +85,8 @@ jobs:
         id: tests
         continue-on-error: false
         run: |
-          vendor/bin/phpunit --coverage-text --coverage-text=coverage.txt
+          vendor/bin/phpunit --coverage-text=coverage.txt
+          cat coverage.txt
           echo "coverage=$(cat coverage.txt | grep -Po '^\s*Lines:\s*\d+.\d+\%' | grep -Po '\d+.\d+')" >> $GITHUB_OUTPUT
 
       # TODO on pull request add comment?
