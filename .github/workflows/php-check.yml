@@ -6,6 +6,12 @@ on:
   workflow_call:
     # see https://docs.github.com/en/actions/using-workflows/reusing-workflows#using-inputs-and-secrets-in-a-reusable-workflow
     inputs:
+      composerRequire:
+        required: false
+        type: string
+      composerRequireDev:
+        required: false
+        type: string
       phpVersion:
         required: false
         type: string
@@ -61,6 +67,14 @@ jobs:
           extensions: mbstring
           tools: composer:v2
 
+      - name: "Require dev before install"
+        if: ${{ inputs.composerRequireDev != '' }}
+        run: "composer require --dev ${{ inputs.composerRequireDev }}"
+      
+      - name: "Require before install"
+        if: ${{ inputs.composerRequire != '' }}
+        run: "composer require ${{ inputs.composerRequire }}"
+        
       - name: "Install lowest dependencies"
         if: ${{ matrix.dependencies == 'lowest' }}
         run: "composer update --prefer-lowest --no-interaction --no-progress"
