@@ -9,6 +9,12 @@ on:
       gistID:
         required: false
         type: string
+      composerRequire:
+        required: false
+        type: string
+      composerRequireDev:
+        required: false
+        type: string
       composerRemove:
         required: false
         type: string
@@ -48,6 +54,17 @@ jobs:
           coverage: "xdebug"
           php-version: "${{ inputs.phpVersion }}"
 
+      - name: "Update composer with correct php version"
+        run: "composer require php:'>=${{ inputs.phpVersion }}' --no-update"
+      
+      - name: "Require dev before install"
+        if: ${{ inputs.composerRequireDev != '' }}
+        run: "composer require --dev ${{ inputs.composerRequireDev }} --no-update"
+      
+      - name: "Require before install"
+        if: ${{ inputs.composerRequire != '' }}
+        run: "composer require ${{ inputs.composerRequire }} --no-update"
+        
       - name: "Install lowest dependencies"
         if: ${{ matrix.dependencies == 'lowest' }}
         run: "composer update --prefer-lowest --no-interaction --no-progress"
