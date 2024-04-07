@@ -5,7 +5,7 @@ See https://docs.github.com/en/actions/learn-github-actions/reusing-workflows#ca
 ## PHP  Check
 
 1. Create a file `.github/workflows/check.yml`
-2. Runs PHP stan **(needs to be installed).** with `composer lint:stan`
+2. Runs PHPStan **(needs to be installed).** with `composer analyse`
 3. Runs Rector PHP **(needs to be installed).** with `composer lint:upgrade:check`
 4. Runs ECS **(needs to be installed).** with `composer lint:check`
 5. Runs PHP unit tests with ` vendor/bin/phpunit`
