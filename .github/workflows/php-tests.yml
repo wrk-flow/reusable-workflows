@@ -95,7 +95,7 @@ jobs:
 
       - name: "Create badge"
         if: ${{ inputs.gistID != '' && inputs.gistOnPhpVersion == inputs.phpVersion && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
-        uses: schneegans/dynamic-badges-action@v1.8.0
+        uses: schneegans/dynamic-badges-action@v1.4.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: ${{ inputs.gistID }}
