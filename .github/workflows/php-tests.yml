@@ -1,5 +1,4 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
-
 name: "Check PHP"
 
 on:
@@ -32,6 +31,7 @@ on:
     secrets:
       GIST_SECRET:
         required: false
+
 jobs:
   tests:
     name: "Tests ${{ inputs.phpVersion }} (${{ matrix.dependencies }})"
@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -56,11 +56,11 @@ jobs:
 
       - name: "Update composer with correct php version"
         run: "composer require php:'>=${{ inputs.phpVersion }}' --no-update"
-      
+        
       - name: "Require dev before install"
         if: ${{ inputs.composerRequireDev != '' }}
         run: "composer require --dev ${{ inputs.composerRequireDev }} --no-update"
-      
+        
       - name: "Require before install"
         if: ${{ inputs.composerRequire != '' }}
         run: "composer require ${{ inputs.composerRequire }} --no-update"
@@ -93,7 +93,7 @@ jobs:
 
       - name: "Create badge"
         if: ${{ inputs.gistID != '' && inputs.gistOnPhpVersion == inputs.phpVersion && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
-        uses: schneegans/dynamic-badges-action@v1.4.0
+        uses: schneegans/dynamic-badges-action@v1.8.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: ${{ inputs.gistID }}
