@@ -1,0 +1,10 @@
+includes:
+  - phpstan-baseline.neon
+
+parameters:
+  level: max
+  paths:
+    - src
+    - ecs.php
+    - rector.php
+    - tests
