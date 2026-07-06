@@ -85,9 +85,10 @@ jobs:
         id: tests
         continue-on-error: false
         run: |
-          vendor/bin/phpunit --coverage-text=coverage.txt
+          vendor/bin/phpunit --coverage-text=coverage.txt --no-color
           cat coverage.txt
-          echo "coverage=$(cat coverage.txt | grep -Po '^\s*Lines:\s*\d+.\d+\%' | grep -Po '\d+.\d+')" >> $GITHUB_OUTPUT
+          # Using \K drops everything before the match, eliminating the need for a second grep
+          echo "coverage=$(grep -Po 'Lines:\s*\K[0-9.]+' coverage.txt)" >> $GITHUB_OUTPUT
 
       # TODO on pull request add comment?
 
