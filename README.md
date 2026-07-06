@@ -4,6 +4,8 @@ See https://docs.github.com/en/actions/learn-github-actions/reusing-workflows#ca
 
 ## PHP  Check
 
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/pionl/de6a8c4102b8d237e822ca47ed805036/raw/coverage.json)
+
 1. Create a file `.github/workflows/check.yml`
 2. Runs PHPStan **(needs to be installed).** with `composer analyse`
 3. Runs Rector PHP **(needs to be installed).** with `composer lint:upgrade:check`
