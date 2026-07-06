@@ -93,14 +93,14 @@ jobs:
 
       # TODO on pull request add comment?
 
-      #- name: "Create badge"
-      #  if: ${{ inputs.gistID != '' && inputs.gistOnPhpVersion == inputs.phpVersion && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
-      #  uses: schneegans/dynamic-badges-action@v1.8.0
-      #  with:
-      #    auth: ${{ secrets.GIST_SECRET }}
-      #    gistID: ${{ inputs.gistID }}
-      #    filename: coverage.json
-      #    label: Coverage
-      #    # TODO colors?
-      #    message: ${{ steps.tests.outputs.coverage }}
-      #    color: success
+      - name: "Create badge"
+        if: ${{ inputs.gistID != '' && inputs.gistOnPhpVersion == inputs.phpVersion && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
+        uses: pionl/dynamic-badges-action@9c9a724ab23462889be4eb54f09fde5d9c2ea667
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ inputs.gistID }}
+          filename: coverage.json
+          label: Coverage
+          # TODO colors?
+          message: ${{ steps.tests.outputs.coverage }}
+          color: success
