@@ -110,7 +110,7 @@ jobs:
 
       - name: "Create badge"
         if: ${{ inputs.gistID != '' && inputs.gistOnPhpVersion == inputs.phpVersion && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' && ((inputs.badgeOnBranch != '' && github.ref == format('refs/heads/{0}', inputs.badgeOnBranch)) || (inputs.badgeOnPullRequest && github.event_name == 'pull_request')) }}
-        uses: pionl/dynamic-badges-action@9c9a724ab23462889be4eb54f09fde5d9c2ea667
+        uses: pionl/dynamic-badges-action@f2bde01f27576417b46298af6fb12801fcd97b1c
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: ${{ inputs.gistID }}
