@@ -1,0 +1,48 @@
+name: "PHP sample"
+
+on:
+  push:
+    branches:
+      - "main"
+
+  pull_request:
+    paths:
+      - "php-sample/src/**"
+      - "php-sample/tests/**"
+      - "php-sample/composer.json"
+      - "php-sample/ecs.php"
+      - "php-sample/rector.php"
+      - "php-sample/phpstan.neon"
+      - "php-sample/phpstan-baseline.neon"
+      - "php-sample/phpunit.xml"
+
+concurrency:
+  group: "php-sample-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  code:
+    name: "Code check"
+    strategy:
+      matrix:
+        phpVersion: ["8.3", "8.4", "8.5"]
+    uses: ./.github/workflows/php-check.yml
+    with:
+      phpVersion: "${{ matrix.phpVersion }}"
+      workingDirectory: "php-sample"
+    secrets: inherit
+
+  tests:
+    name: "Run tests"
+    strategy:
+      matrix:
+        phpVersion: ["8.3", "8.4", "8.5"]
+    uses: ./.github/workflows/php-tests.yml
+    with:
+      badgeOnBranch: "main"
+      badgeOnPullRequest: true
+      gistOnPhpVersion: "8.3"
+      gistID: "de6a8c4102b8d237e822ca47ed805036"
+      phpVersion: "${{ matrix.phpVersion }}"
+      workingDirectory: "php-sample"
+    secrets: inherit

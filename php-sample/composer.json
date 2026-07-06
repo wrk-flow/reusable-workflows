@@ -1,0 +1,44 @@
+{
+    "name": "wrk-flow/reusable-workflows",
+    "description": "Sample PHP project for exercising wrk-flow reusable workflows.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3"
+    },
+    "require-dev": {
+        "strictphp/conventions": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WrkFlow\\PhpSample\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WrkFlow\\PhpSample\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "qa": [
+            "@lint",
+            "@test",
+            "@analyse"
+        ],
+        "analyse": "./vendor/bin/phpstan",
+        "lint:check": "./vendor/bin/ecs",
+        "lint:fix": "./vendor/bin/ecs --fix",
+        "lint:upgrade": "./vendor/bin/rector process",
+        "lint:upgrade:check": "./vendor/bin/rector process --dry-run",
+        "test": "./vendor/bin/phpunit",
+        "test:coverage": "./vendor/bin/phpunit --coverage-text"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

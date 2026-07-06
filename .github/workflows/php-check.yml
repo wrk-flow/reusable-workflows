@@ -16,11 +16,18 @@ on:
         required: false
         type: string
         default: "8.1"
+      workingDirectory:
+        required: false
+        type: string
+        default: "."
 
 jobs:
   coding-standards:
     name: "Coding Standard"
     runs-on: "ubuntu-latest"
+    defaults:
+      run:
+        working-directory: "${{ inputs.workingDirectory }}"
 
     steps:
       - name: "Checkout"
@@ -47,6 +54,9 @@ jobs:
   static-analysis:
     name: "PHPStan"
     runs-on: "ubuntu-latest"
+    defaults:
+      run:
+        working-directory: "${{ inputs.workingDirectory }}"
 
     strategy:
       fail-fast: false

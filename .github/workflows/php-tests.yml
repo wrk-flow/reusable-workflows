@@ -24,10 +24,22 @@ on:
         required: false
         type: string
         default: "8.1"
+      badgeOnBranch:
+        required: false
+        type: string
+        default: "main"
+      badgeOnPullRequest:
+        required: false
+        type: boolean
+        default: false
       phpVersion:
         required: false
         type: string
         default: "8.1"
+      workingDirectory:
+        required: false
+        type: string
+        default: "."
     secrets:
       GIST_SECRET:
         required: false
@@ -36,6 +48,9 @@ jobs:
   tests:
     name: "Tests ${{ inputs.phpVersion }} (${{ matrix.dependencies }})"
     runs-on: "ubuntu-latest"
+    defaults:
+      run:
+        working-directory: "${{ inputs.workingDirectory }}"
 
     strategy:
       fail-fast: false
@@ -94,7 +109,7 @@ jobs:
       # TODO on pull request add comment?
 
       - name: "Create badge"
-        if: ${{ inputs.gistID != '' && inputs.gistOnPhpVersion == inputs.phpVersion && github.ref == 'refs/heads/main' && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' }}
+        if: ${{ inputs.gistID != '' && inputs.gistOnPhpVersion == inputs.phpVersion && matrix.dependencies == 'highest' && steps.tests.outputs.coverage != '' && ((inputs.badgeOnBranch != '' && github.ref == format('refs/heads/{0}', inputs.badgeOnBranch)) || (inputs.badgeOnPullRequest && github.event_name == 'pull_request')) }}
         uses: pionl/dynamic-badges-action@9c9a724ab23462889be4eb54f09fde5d9c2ea667
         with:
           auth: ${{ secrets.GIST_SECRET }}
