@@ -88,7 +88,8 @@ jobs:
           vendor/bin/phpunit --coverage-text=coverage.txt --colors=never
           cat coverage.txt
           # Using \K drops everything before the match, eliminating the need for a second grep
-          echo "coverage=$(grep -Po 'Lines:\s*\K[0-9.]+' coverage.txt)" >> $GITHUB_OUTPUT
+          # -m 1 ensures we only grab the overall summary line coverage
+          echo "coverage=$(grep -m 1 -Po 'Lines:\s*\K[0-9.]+' coverage.txt)" >> $GITHUB_OUTPUT
 
       # TODO on pull request add comment?
 
